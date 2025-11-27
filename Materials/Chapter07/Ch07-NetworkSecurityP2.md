@@ -26,37 +26,47 @@
         - ผู้ใช้ขอชื่อโดเมน ผู้ใช้พิมพ์ URL เช่น www.chula.ac.th ในเบราว์เซอร์ → เครื่องจะต้องหาว่าโดเมนนั้นมี IP Address อะไร
         - ระบบปฏิบัติการหรือเบราว์เซอร์จะเช็ก DNS cache ในเครื่อง (local) ก่อน
             - ถ้ามีข้อมูล (ยังไม่หมดอายุ TTL) จะใช้ IP นั้นทันที
-            - else -> ถาม DNS Resolver (ของ ISP หรือองค์กร)
+            - else -> ถาม DNS Resolver (ของ InternetServiceProvider หรือองค์กร)
         - Resolver ตรวจสอบลำดับชั้นของ DNS
             - ตรวจสอบใน cache
             - ถ้ายังไม่รู้คำตอบ Resolver จะทำการค้นแบบ “recursive”
                 - ถาม Root DNS Server → ได้ชื่อของ Top-Level Domain (TLD) เช่น .th
-                - ถาม TLD Server (.th) → ได้ชื่อของ Authoritative Server ของ chula.ac.th
+                - ถาม TLD Server (.th) → ได้ชื่อของ Authoritative Server ที่ดูแล chula.ac.th
                 - ถาม Authoritative Server (chula.ac.th) → ได้ IP ของ www.chula.ac.th
             - Resolver ส่งผลกลับให้เครื่องผู้ใช้
             - Resolver จะเก็บผลไว้ใน cache เพื่อใช้ในอนาคต
         - ผู้ใช้ได้รับ IP เช่น 161.200.192.4
         - นำ IP ที่ได้ไปเปิดการเชื่อมต่อผ่าน TCP หรือ HTTPS
     - ปัญหา : 
-        - 1 web อาจจะมี Authority หลายแห่งที่ตอบได้ ทำให้ใน response เขียน Authority ได้หลายอัน
-        - User เชื่อสิ่งที่ DNS resolver ส่งกลับมาให้ 100% -> แปลว่าถ้าเราแก้ user ก็จะไปผิดที่
-  - Cache poisoning
-    - ผู้โจมตีส่ง DNS response ปลอม ที่มี Additional Record แถมโดเมนอื่นเข้ามาด้วย
-    - ตัวอย่าง: ผู้ใช้ถาม IP ของ a.com แต่ผู้โจมตีแนบข้อมูล b.com = 6.6.6.6 มาด้วย ซึ่งจริงๆ b.com = 1.1.1.1, 6.6.6.6 เป็น web ปลอมทำชั่ว
-    - **Defense** : แก้โดยไม่ให้แถม แต่มันก็จะทำให้ Perf แย่ -> แถมได้เฉพาะ web ที่อยู่ใต้ domain เดียวกัน เช่น ns.a.com, mail.a.com  (Bailiwick Checking)
-  - Spoofing (Kaminsky) : DNS Spoofing
-    - ปลอมตัวเป็น DNS Server แล้ว response resolver เอง
-    - ใน Response , port ส่วนใหญ่คงที่เป็น 53 ดังนั้นเดาแค่ queryId ก็พอ ซึ่งแค่ 16 bits เท่านั้น เหมือนอิงตาม birthday paradox โอกาส Q=256,R=256 แล้วถูกมีถึง 63 %
+        - มันมี part additional ที่ใส่ <name,ip> ตอน authoritative ส่งคืนให้ DNS resolver
+        - DNS resolver เชื่อสิ่งที่ DNS Server ส่งกลับมาให้ 100% 
+
+  - Spoofing (Kaminsky) : DNS Spoofing -> เป็นวิธีการ
+    - ตอบ DNS resolver แทน DNS Server -> ทำให้ Cache Poisoning 
+    - เมื่อก่อนใน Response, port ส่วนใหญ่คงที่เป็น 53 ดังนั้นเดาแค่ queryId ก็พอ ซึ่งแค่ 16 bits เท่านั้น เหมือนอิงตาม Birthday paradox โอกาส Q=256,R=256 แล้วถูกมีถึง 63 %
+      - เราพยายามทำให้ DNS resolve ส่งไปเปิด Query ไว้ 256 อัน (Q = 256)
+      $$P_{1 fail} = \frac{65,536 - 256}{65,536}$$
+      - เราปลอมไป 256 อัน (R = 256), lower_bound ต่อให้ R มีซ้ำ
+      $$P_{256 fail} = (\frac{65,536 - 256}{65,536})^{256} = 0.367$$
+      $$P_{success} = = 1 - 0.367 = 0.63$$
     - **Defense** : 
         - Increase QueryId Space (16 bits -> 32 bits) -> แต่ยากเพราะต้องแก้ Protocol
         - source-port randomization : เปลี่ยนจาก fixed ทำให้โอกาสเพิ่มเป็น 2^32 bits
 
-  - Rebinding : เปลี่ยน IP ที่ผูกกับชื่อโดเมนให้เป็น Internal ณญ, TTL อันแรกน้อย รอบ 2 ส่งให้เป็น Internal IP แล้วให้ JS ที่ฝังไปขุดข้อมูล
+  - Cache poisoning 
+    - ผู้โจมตีส่ง DNS response ปลอม ที่มี Additional Record แถมโดเมนอื่นเข้ามาด้วย (ส่งด้วย DNS Spoofing)
+    - ตัวอย่าง: ผู้ใช้ถาม IP ของ a.com แต่ผู้โจมตีแนบข้อมูล b.com = 6.6.6.6 มาด้วย ซึ่งจริงๆ b.com = 1.1.1.1, 6.6.6.6 เป็น web ปลอมทำชั่ว
+    - **Defense** : แก้โดยไม่ให้แถม แต่มันก็จะทำให้ Perf แย่ จึงเปลี่ยนเป็นแถมได้เฉพาะ web ที่อยู่ใต้ domain เดียวกัน (Bailiwick Checking) เช่น ns.a.com, mail.a.com  
+
+  - Rebinding : เปลี่ยน IP ที่ผูกกับชื่อโดเมนให้เป็น Internal ip, TTL อันแรกน้อย รอบ 2 ส่งให้เป็น Internal IP แล้วให้ JS ที่ฝังไปขุดข้อมูล
+    - DNS Spoofing ไม่ใช่ Required Condition: ถูกต้องครับ (ปกติแค่หลอกให้กดลิงก์ก็พอแล้ว)
+    - แต่ DNS Spoofing เป็น Catalyst (ตัวเร่ง): ช่วยบังคับให้คนที่ไม่ยอมกดลิงก์แปลกๆ กลายเป็นเหยื่อของ DNS Rebinding ได้
     - **Defense** : 
     - ฝั่งเบราว์เซอร์: ปรับค่าป้องกัน DNS rebinding, refuse mid-session IP switch
     - ฝั่งเครือข่าย/Resolver: บล็อกการ resolve ชื่อสาธารณะให้เป็น private IP ranges
     - Firewall: ป้องกันการเข้าถึงพอร์ตจัดการจากเครือข่ายภายนอก
-  - DNSSEC (auth & integrity, กำหนดคนตอบ DNS, แต่ไม่แก้ปัญหาใดๆ ที่กล่าวมา)
+
+  - DNSSEC (auth & integrity) -> เพิ่ม "ลายเซ็นดิจิทัล" (Digital Signature) -> แก้ DNS Spoofing -> แก้ Cache Poisoning
 
 ---
 
@@ -67,9 +77,9 @@
     - Loop : UDP Ping-Pong
     - Amplification : 
 - Possible at every layer
-    - Application layer : Process ไม่ทัน mostly ทำกันชั้นนี้
+    - Application layer : Process ไม่ทัน mostly ทำกันชั้นนี้, CPU/RAM ระเบิด
     - TCP/UDP (Transport layer): Maintain large number of connection -> queue ไม่พอ client connect server ไม่ได้
-    - Link layer : too much traffic
+    - Link layer : Too much traffic
 - ทำผ่าน DNS : DDoS Amplification + Reflector Attack
     - สร้างคำขอที่จะได้ response ขนาดใหญ่ (Authority เยอะหรือ web ใต้ domain เยอะ) 
     - ซึ่งคำขอนี้มี Src IP เป็นของ Target ทำให้ victim จะได้รับของกลับไป ซึ่งทำหลายๆ อันยัดไปก็พัง
@@ -82,7 +92,7 @@
 - **Reset attack:** Inject TCP RST to terminate connection. ส่งแพ็กเก็ตที่มีธง RST เพื่อสั่งให้เครื่องฝั่งรับปิดการเชื่อมต่อทันที. 
 ต้องรู้ 4-tuple (srcIP, srcPort, dstIP, dstPort) และ sequence number ที่อยู่ใน window
 - **SYN flood:** ส่ง SYN จำนวนมาก (มัก spoof source IP) ทำให้เซิร์ฟเวอร์สร้าง state (half-open) รอ ACK ที่จะไม่มา → คิว backlog เต็ม ไม่รับการเชื่อมต่อใหม่จากผู้ใช้จริง  
-  - **Good fixes:** SYN cookies, ไม่ใช่ backlog แต่ encrypt แล้วให้อีกฝ่ายส่งกลับด้วย.
+  - **Good fixes:** SYN cookies, ไม่ใช้ backlog แต่ encrypt แล้วให้อีกฝ่ายส่งกลับด้วย.
     - With SYN cookies, server does not store state. Instead, it encodes connection info (client IP, port, timestamp, etc.) inside the SYN-ACK’s sequence number.
     - If the client is real, it replies with an ACK that includes this value.  
   - **Bad fixes:** Increasing queue or shortening timeout.

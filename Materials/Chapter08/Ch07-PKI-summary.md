@@ -34,7 +34,7 @@ Even with public keys, we cannot prove ownership without binding a key to an ide
 
 ---
 
-## 5. Trust Model – Web of Trust
+## 5. Trust Model – Chain of Trust
 If a trusted entity signs a certificate, you trust the certificate and its subject.
 
 Example chain:  

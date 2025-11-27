@@ -25,7 +25,11 @@
 - **Classical history:** 
   - Scytale (Sparta): Transposition cipher — สลับตำแหน่งตัวอักษร ไม่ได้เปลี่ยนตัวอักษรเอง
   - Caesar cipher (monoalphabetic):  แทนแต่ละตัวอักษรด้วยอีกตัวอักษรหนึ่งโดยใช้รูปแบบการแทนที่คงที่ (fixed mapping)
-    - ในตัวอย่างจะมี key encryption จะเป็น key + rest of alphabet
+    - ตามที่เสริชหาได้ Caesar Cipher คือ fixed shift ด้วยซ้ำคือ เช่น 3 คือ bad -> edg
+    - แบบที่อาจารย์ยกตัวอย่างในสไลด์คือ Keyword Cipher คือ
+      - `abcdefgh...` : standard alphabet 
+      - `fodabceg...` if key = 'food' ซ้ำก็ตัดออก, key + rest of alphabet 
+      - bad -> ofa
   - Weakness: Frequency analysis reveals plaintext patterns. -> เพราะในคำศัพท์อังกฤษ pattern การใช้อักษรมันค่อนข้างคงที่ เช่น e มักจะมากสุด
 
 ## 4. Modern Encryption Types
@@ -36,31 +40,65 @@
 | **Asymmetric** | Key pair (Public/Private). | RSA, DSA |
 
 ## 5. Symmetric Encryption Details
-- **Stream Cipher**: Encrypts bit-by-bit or character-by-character, extend key to match the size of input.
-  - diff position & same char -> may encrypt differently
+- **Stream Cipher**: Encrypts bit-by-bit or character-by-character, extend key to match the size of input(how to extend based on algorithm).
+  - Depend On Pos : diff position & same char -> may encrypt differently
+  - `LUCKYLUCK` Lucky is key, extend to LUCKYLUCK to match input size
+  - `COMPUTING` Plain text
+  - `NIOZSECPQ` Cipher text
+  - Each pair <a,b> <b,a> will give same Char
+
+  ![StreamCipher](Image/StreamCipher.png)
+
 - **Block Cipher**: Encrypts fixed-size blocks, construct cipher blocks
-  - diff group & same char -> may encrypt differently  
+  - Depend On Group : diff group & same char -> may encrypt differently 
+  - **Fixed Size:** Every block must be the exact same size (e.g., 2 letters in Playfair).
+    - **The Constraint:** The system cannot process half a block.
+        - **Odd Numbers:** Input has odd number of letters, add a dummy letter (e.g., `X`) to the end.
+          * *Example:* `ROBOT` (5 letters) $\rightarrow$ `RO` `BO` `TX`
+        - **Double Letters:** Input a pair of identical letters in the same block. You must insert a dummy letter between them.
+          * *Example:* `HELLO` $\rightarrow$ `HE` `LX` `LO`
+
+    ### The 3 Rules of Encryption
+    | Shape formed by letters | The Rule | Visual |
+    | :--- | :--- | :--- |
+    | **Rectangle** (Diff Row, Diff Col) | Swap Corners | 🔀 Swap Horizontal |
+    | **Column** (Same Column) | Shift **Down** | ⬇️ Move Down (Wrap to 1st row)|
+    | **Row** (Same Row) | Shift **Right** | ➡️ Move Right (Wrap to 1st col) |
+
+  ![BlockCipher](Image/BlockCipher.png)
+
   - **Variations:**
     - Initial vector : Vector ที่เอามา XOR กับ plaintext เริ่มต้น
-    - Padding : If block is not full -> use what
+    - Padding : If block is not full -> use what (usually use 'X')
     - Chaining : ผูกแต่ละบล็อกด้วย ciphertext ก่อนหน้า
     - Feedback : นำ output จากรอบก่อน (ciphertext หรือ output ของ encryption) มาใช้สร้าง key/IV ของรอบต่อไป -> ทำ precompute ได้ถ้าใช้ output
   - **Modes of operation:**  
     - Electronic Codebook (ECB) : Block Cipher ปกติ Plaintext + Key -> Ciphertext
+    - Problem : Word Frequency Analysis -> คำเดิมได้แบบเดิม -> เจอบ่อยๆ คือ word ที่ฮิต
+    ![ECB](Image/ECB.png)
+
     - Cipher Block Chaining (CBC) : Initial Vector + Chaining
       - เอา IV มา XOR กับ Plaintext ก่อนเข้า Block, Ciphertext ที่ได้ -> IV ของ block ถัดไป
       - Ciphertext (1) = BlockCipher(IV(0) XOR Plaintext(1))
       - IV(1) = Ciphertext (1)
       - Ciphertext (2) = BlockCipher(IV(1) XOR Plaintext(2))
+    ![CBC](Image/CBC.png)
+
     - Propagating CBC (PCBC) : CBC ที่ IV (n) = Ciphertext(n-1) XOR Plaintext(n-1) 
+    ![PCBC](Image/PCBC.png)
+
     - Cipher Feedback (CFB) : IV ผ่าน BlockCipher ก่อน XOR กับ Plaintext, Ciphertext เป็น IV ของ block ถัดไป
       - Ciphertext (1) = BlockCipher(IV(0)) XOR Plaintext(1)
       - IV(1) = Ciphertext (1)
       - Ciphertext (2) = BlockCipher(IV(1)) XOR Plaintext(2)
+    ![CFB](Image/CFB.png)
+
     - Output Feedback (OFB) : IV block ถัดไปเป็น CipherBlock(IV) -> Precompute ได้
       - Ciphertext (1) = BlockCipher(IV(0)) XOR Plaintext(1)
       - IV(1) = BlockCipher(IV(0))
-    - Counter : ใช้ Counter Noun แทน IV อย่างอื่นเหมือน CBC ไม่มี Chaining
+    ![OFB](Image/OFB.png)
+    - Counter : ใช้ Counter Noun แทน IV อย่างอื่นเหมือน FB ไม่มี Feedback
+    ![Counter](Image/Counter.png)
 
 ## 6. Public Key Concepts
 - Encryption with **private key** can only be decrypt with **public key**, vice versa.  
@@ -82,8 +120,8 @@
 - Combine algorithms to leverage strengths (e.g., speed + scalability).  
 - **Digital Signature:** Hash + Public key = fast, verifiable authenticity. 
   - Use to check **message didnot modify (integrity)** and **come from expected sender (authenticity)**
-  - Private(Hash(SendMsg)) = Digital Signature
-  - if Hash(ReceiveMsg) == Public(DigSig)? True(Trustable) : False(Fake/Modify) 
+  - `PriKey(Hash(SendMsg)) = Digital Signature`
+  - `if Hash(ReceiveMsg) == PubKey(DigSig)? Trustable : Fake/Modify` 
 - **HTTPS/SSL/TLS:** Combines symmetric and asymmetric encryption for key exchange and secure communication.
   - ใช้ Asymmetric ส่ง Key ของ Symmetric
   - ใช้ Symmetric ส่ง content
@@ -91,9 +129,9 @@
     - Symmetric encryption ต้องใช้ “คีย์เดียวกันทั้งสองฝั่ง” → ปัญหาคือ จะเอาคีย์นี้ไปให้กันยังไงโดยไม่ให้โดนดัก?
     - ถ้าส่งคีย์ออกไปตรง ๆ → คนดักระหว่างทางก็จะเห็นคีย์นั้นทันที → ไม่ปลอดภัย
     - Asymmetric encryption แก้ปัญหานี้
-  Conclusion : ใช้ Asymmetric เพื่อส่งคีย์ของ Symmetric อย่างปลอดภัย
-แล้วใช้ Symmetric เพื่อเข้ารหัสข้อมูลจริงให้เร็ว
-
+  - Conclusion : ใช้ Asymmetric เพื่อส่งคีย์ของ Symmetric อย่างปลอดภัย แล้วใช้ Symmetric เพื่อเข้ารหัสข้อมูลจริงให้เร็ว
+  - **How we check the public key?** -> **Chain of trust** which will explain in **PKI** 
+  
 ## 9. Modern Cryptography Challenges
 - Quantum computing, ML attacks, side-channel exploits.  
 - Research directions:

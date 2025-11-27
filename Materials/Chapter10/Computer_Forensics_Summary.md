@@ -1,4 +1,4 @@
-# 🧠 Computer Forensics Summary
+# Computer Forensics Summary
 
 ## 1. Definition
 - **Digital Forensics** combines **law** and **computer science** to collect and analyze data from:

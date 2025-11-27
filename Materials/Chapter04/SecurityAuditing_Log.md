@@ -11,8 +11,8 @@
 - **Accounting/Auditing:** Log and track user actions.
 
 ## 3. Auditing Concepts
-- **Logging:** Record events or stats about system usage & perf.  
-- **Auditing:** Analyze logs to interpret system status clearly.
+- **Logging: Record events** or stats about system usage & perf.  
+- **Auditing: Analyze logs** to interpret system status clearly.
 
 ## 4. Auditing Goals
 - User accountability : Known who's action  
@@ -70,8 +70,8 @@ Selective auditing by user identity must be supported. -> special for suspected 
     - Timing :
         - **real-time** : most service impossible
         - **post-mortem** : mostly use this one
-    - Rule-based example : 
-        - 3 fail logins in a row -> disable acc & notify admin
+    - Rule-based Analysis & Response example : 
+        - 3 fail logins in a row (Analysis Rule) -> disable acc & notify admin (Response)
 4. **Response:** Alerts, reports, evidence preservation, lessons learned.
     - Alerts: automatic or manual notifications when suspicious activity is detected.
 

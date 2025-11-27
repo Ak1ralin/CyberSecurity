@@ -91,7 +91,7 @@
 - Dictionary : Use dict -> compute -> try
 - Brute-force : Try every possible 
 - Rainbow table : Precomputed hashes for instant lookup.
-- Replay : 
+- Replay : ดักจับข้อมูล authentication ที่ valid แล้วเอามันมาใช้ซ้ำ
 - Social Engineer : Phishing
 
 ### Defensive Measures

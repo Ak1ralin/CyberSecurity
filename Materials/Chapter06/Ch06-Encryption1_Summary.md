@@ -9,7 +9,7 @@
 ## 2. Minimizing Trust - Becase Reality, we cannot trust everything
 - Use **sandbox** and **domain isolation** to reduce trust boundaries.  
 - **Sandbox model (Java Applet)**: Runs untrusted code with limited privileges.   
-- Hardware mechanisms that support Integrity(isolation):
+- Hardware mechanisms that support Integrity (isolation):
   - **Ring levels (0–3)** for privilege separation.
     - Ring 0: Kernel mode — full hardware access.
     - Ring 3: User mode — restricted access.

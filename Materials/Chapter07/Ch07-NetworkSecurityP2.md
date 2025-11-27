@@ -1,6 +1,6 @@
 # Practical Network Security – Part 2  
 
-## 2. Firewall, IDS, IPS
+## 1. Firewall, IDS, IPS
 | System | Function | Limitation |
 |---------|-----------|-------------|
 | **Firewall** | Filters IP/port headers | Cannot inspect payloads |
@@ -11,14 +11,14 @@
 
 ---
 
-## 3. Network Threat Model
+## 2. Network Threat Model
 - Adversary can intercept, modify, and send packets.  
 - Full control of their machines and can join protocols.  
 - Impossible to keep all bad actors out.
 
 ---
 
-## 4. UDP and DNS Security
+## 3. UDP and DNS Security
 - UDP = connectionless, unreliable, no authentication.  
 - Common apps: DNS, QUIC, VoIP.  
 - **DNS attacks:**   : Application-Layer protocol
@@ -60,7 +60,7 @@
 
 ---
 
-## 5. Denial-of-Service (DoS/DDoS)
+## 4. Denial-of-Service (DoS/DDoS)
 - Goal: exhaust victim resources using asymmetric workloads.  
 - **Amplifiers:** 
     - One -> Many : Smurf, Fraggle
@@ -77,7 +77,7 @@
 
 ---
 
-## 6. TCP Vulnerabilities
+## 5. TCP Vulnerabilities
 - **Spoofing:** Guess sequence number (1/2³² chance). ผู้โจมตีส่งแพ็กเก็ตปลอมที่แสดงตัวเป็นฝั่งหนึ่งของการเชื่อมต่อ เพื่อแทรกข้อมูลหรือ hijack stream.   
 - **Reset attack:** Inject TCP RST to terminate connection. ส่งแพ็กเก็ตที่มีธง RST เพื่อสั่งให้เครื่องฝั่งรับปิดการเชื่อมต่อทันที. 
 ต้องรู้ 4-tuple (srcIP, srcPort, dstIP, dstPort) และ sequence number ที่อยู่ใน window
@@ -89,7 +89,7 @@
 
 ---
 
-## 7. TLS/SSL
+## 6. TLS/SSL
 - ใช้ “asymmetric encryption” แค่ตอนตั้งต้น เพื่อส่งหรือสร้าง “symmetric key” ที่จะใช้เข้ารหัส session ต่อไปทั้งหมด.
 - Provides encryption, integrity, and authentication.  
 - **Handshake:** negotiate algorithm, exchange keys, create session key.  
@@ -98,7 +98,7 @@
 
 ---
 
-## 8. Overall Defense Strategy
+## 7. Overall Defense Strategy
 - Combine **patching**, **secure coding**, **education**, and **encryption**.  
 - **Firewalls:** partial protection.  
 - **Cryptographic protocols:** TLS, SSH, Kerberos.  
@@ -107,7 +107,7 @@
 
 ---
 
-## 9. Key Takeaways
+## 8. Key Takeaways
 - Security issues often stem from **protocol design**, not bugs.  
 - Must assume the network is hostile.  
 - Layered defense: firewall + IDS/IPS + TLS + user awareness.  

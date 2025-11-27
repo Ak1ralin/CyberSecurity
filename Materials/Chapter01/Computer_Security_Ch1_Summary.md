@@ -1,17 +1,8 @@
 # Chapter 1: Introduction to Computer Security
-
-Topics:
-- Why should we learn security?
-- Cybercrimes and malicious software
-- Ten Security Principles
-- Definition of Security
-- Course goals and materials
-
 ---
 
 ## 1. Why Learn Security?
 Modern systems and infrastructures are highly vulnerable.  
-Malware means malicious software. 
 Cyber threats include:
 
 Malware means malicious software.
@@ -47,12 +38,12 @@ Cybercrimes : crime that use digital as mediums.
 Digital crimes include:
 - **Cyber Stalking:** Harassment/Stalk others via online mediums.  
 - **Fraud / Identity Theft:** Unauthorized use of personal info.  
-- **Hacking:** Unauthorized access or.
+- **Hacking:** Unauthorized access.
 ---
 
 ## 3. Social Engineering
 Persuading people into revealing confidential information.  
-Example: AOL hack using fake car sale email with malware.  
+Example: AOL hack using fake car sale email with attachment which contain malware.  
 Potential leaks include printed documents, disks, and outdated hardware.
 
 ---

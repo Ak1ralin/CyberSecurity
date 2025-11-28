@@ -35,11 +35,11 @@
    - Weakness : Forensic tool check file header can compare the extension 
 - **Attributes hiding:** Mark as Hidden in OS -> disappears from normal file explorer view
    - Weakness : Visible if system show hidden files
-- **Partition hiding:** `diskpart remove letter` -> OS won’t display that partition (OS wont mount), though data still exists. 
-   - Weakness : Visible to forensic tools that scan unallocated space, analyze disk space
-- **Bit-shifting:** Reorder binary data to hide content -> file become unreadble (lightweight encryption).
-- **Encrypt/Password:** Data unreadble without key 
-- **Marking bad clusters:** FAT file system, attacker can manually mark good clusters as “bad”, so the OS skips them, assuming they are damaged.
+- **Bit-shifting:** Shift binary data to hide content -> file become unreadble (lightweight encryption) -> but easy to crack.
+- **Encrypt/Password:** Data unreadble without key
+- **Partition hiding (ไม่ mount):** `diskpart remove letter` -> OS won’t display that partition (OS wont mount), though data still exists. 
+   - Weakness : Visible to forensic tools that scan unallocated space, analyze disk space 
+- **Marking bad clusters (Mount แต่ไม่ใช้เพราะถูก mark ว่าพัง):** FAT file system, attacker can manually mark good clusters as “bad”, so the OS skips them, assuming they are damaged.
    - Weakness : Detectable with modern forensic tools but invisible to casual users.
 ---
 
@@ -56,7 +56,7 @@
    - ฝังข้อความในไฟล์เสียง/วิดีโอโดยเปลี่ยนค่าที่มนุษย์ฟังไม่ต่าง
    - Keys : Human not noticable to these changes
 - **Steganalysis:** detecting and analyzing Steganography.
-- **Digital watermarking:** hides ownership info. Steganography that for license purpose not hiding information
+- **Digital watermarking:** hides ownership info -> บอกว่าไฟล์นี้ของใคร, พยายามเอาตัวรอด. Steganography that for license purpose not hiding information เช่น ช่างภาพซ่อนชื่อใน `.jpg`
 
 ---
 

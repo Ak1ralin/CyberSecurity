@@ -13,6 +13,12 @@
 2. **What you have:** Token, ID, smart card, biometric devices.
 3. **Who/What you trust:** Third-party (Google, ChulaSSO), proximity/trusted zone(dress like student in campus, security would not check your id).
 
+### Desired Properties for Biomentric
+- Universality: Every person should have it (everyone has fingerprints).
+- Distinctiveness: No two people should have the same one.
+- Permanence: It shouldn't change over time.
+- Collectability: It must be easy to scan/measure.
+
 ## Authentication Protocols
 - Combine multiple methods (e.g., password + token).
 - Example: SSH login

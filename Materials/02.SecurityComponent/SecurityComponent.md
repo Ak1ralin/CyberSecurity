@@ -20,7 +20,8 @@
 1. **Authentication:** Identify the user (“Who are you?”)
 2. **Authorization:** Verify permission (“What can you do?”)
 3. **Accounting/Auditing:** Track actions (“What did you do?”)
-→ Known as the “AAA” or “Three-headed Kerberos”.
+
+    → Known as the “AAA” or “Three-headed Kerberos”.
 - BTW every security have 3A, but having 3A not mean its secure.
 
 ## Supporting Concepts

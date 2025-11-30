@@ -4,7 +4,7 @@
 
 -   **Authorization**: "What can you do?" -> **Policy will tell you**
     - **Policy (Law) :** Help to decide 
-        - App-specific decision-making based on policy : Samething action is different in different application -> No general AuthZ can use for every application
+        - App-specific decision-making based on policy : Same situation, action is different in different application -> No general AuthZ can use for every application
         - Type Enforcement (Police) : Enforce to follow policy
 -   **Security Policy**: Clearly define what is secure or insecure, We cannot say something is "safe" unless we define what "safe/unsafe" looks like   
 -   **Secure System**:  Start Secure + No Insecure Moves = Always Secure.
@@ -40,7 +40,7 @@ Policies often revolve around the **CIA triad**: Know about the system is key.
     -   No clear definition on how to define a role lead to **Role Explosion**
         - "Nurse" role. 
         - "Nurse who works night shift" role
-        - "Nurse who works night shift and handles X-rays." 
+        - "Nurse who works night shift and handles X-rays." role
         - Suddenly, you have 1,000 roles, and it's a mess.
 
 - Attribute-Based Access Control (ABAC)

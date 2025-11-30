@@ -53,8 +53,9 @@
 - **Best-effort:** no ordering, retransmission, or security.
 - Attacks: IP spoofing, sniffing, DHCP abuse.
     - Routing (BGP) 
-        - Routers trust peers → BGP hijacks (e.g., Pakistan–YouTube 2008) -> การหลอกทำให้ packet ไปไม่ถึงเป้าหมาย(DoS ถ้าไม่ส่งต่อ)/ดังฟัง/แก้ไข/inject(MitM ถ้าส่งต่อ)
+        - Routers trust peers → BGP hijacks -> การหลอกให้ router ส่ง packet ทาทางเรา
             - Problem : AS ข้าง ๆ พูดอะไรก็เชื่อ” คือจุดอ่อนหลักของ BGP — ไม่มี authentication, ไม่มี validation.
+            - BGP hijacks : หลอก router ว่า "ทางเราไป IP นี้ได้", router เชื่อเลยส่งไป ทำให้ packet ไปไม่ถึงเป้าหมาย(DoS ถ้าไม่ส่งต่อ)/ดังฟัง/แก้ไข/inject(MitM ถ้าส่งต่อ)
         - **Defense:** Secure BGP (BGPsec)
             - **Concept:** ใช้ Cryptography ล็อกเส้นทางแบบ "ลูกโซ่ (Chain)" เพื่อป้องกันการสวมรอย
             - **1. Chain of Trust (กุญแจมาจากไหน? - The Hierarchy):**
@@ -119,7 +120,7 @@
     - ICMP Abuse
         - Can be used for redirection or reflection.
         - Smurf attack : ส่ง ICMP echo ไปยัง broadcast address พร้อมปลอม source IP ให้เป็นของเหยื่อ
-            ผลลัพธ์ : ทุกเครื่องตอบกลับ (ICMP Reply) ไปหาเหยื่อ → Amplified DoS
+            - ผลลัพธ์ : ทุกเครื่องตอบกลับ (ICMP Reply) ไปหาเหยื่อ → Amplified DoS
         - **Defense:** block directed broadcast packets.
     - Network Scanning and Fingerprinting
         - Tools: Nmap for port/OS detection. 

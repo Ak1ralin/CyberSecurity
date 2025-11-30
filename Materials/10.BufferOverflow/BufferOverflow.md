@@ -10,7 +10,7 @@ Buffer overflow occurs when **data exceeds buffer limits and overwrites adjacent
 - 1988 – Morris Worm
   - ลักษณะ: Worm ตัวแรกในประวัติศาสตร์อินเทอร์เน็ต
   - สาเหตุ: ช่องโหว่ buffer overflow ในโปรแกรม fingerd (UNIX) และใช้การเดารหัสผ่านร่วมด้วย
-  - ผลกระทบ: ทำให้เครื่องกว่า 10% ของอินเทอร์เน็ตในขณะนั้นล่มหรือinfected ทำให้ระบบช้าหรือไม่ตอบสนอง
+  - ผลกระทบ: ทำให้เครื่องกว่า 10% ของอินเทอร์เน็ตในขณะนั้นล่มหรือ infected ทำให้ระบบช้าหรือไม่ตอบสนอง
 
 - 2001 – Code Red
   - ลักษณะ: Worm โจมตีเซิร์ฟเวอร์ IIS (Internet Information Services) ของ Microsoft
@@ -30,7 +30,7 @@ Buffer overflow occurs when **data exceeds buffer limits and overwrites adjacent
     - Welchia: Worm for “แก้แค้น” ที่พยายามลบ Blaster ออก แต่สร้างโหลดบนเครือข่ายมหาศาลจนระบบช้าลง
 
 - 2004 – Witty Worm
-  - ลักษณะ: Worm ที่โจมตีFirewall/IDS ของบริษัท Internet Security Systems (ISS)
+  - ลักษณะ: Worm ที่โจมตี Firewall&IDS ของบริษัท Internet Security Systems (ISS)
   - สาเหตุ: ช่องโหว่ buffer overflow ในซอฟต์แวร์ความปลอดภัยของ ISS
   - ผลกระทบ: แพร่กระจายภายในหนึ่งวันหลังจากเผยแพร่ช่องโหว่ (“one-day worm”), เขียนข้อมูลสุ่มทับฮาร์ดดิสก์เหยื่อ
 
@@ -75,23 +75,23 @@ Includes:
   - Canary Words : มาจาก Canary Bird (นกขมิ้น->อ่อนแอ ตายง่าย) -> จะถูกแก้ก่อน RET โดนแก้
     - กั้นระหว่าง Buffer กับของสำคัญ ถ้า overflow Canary ต้องถูกแก้
     - มักมีค่าเป็น "Null Byte" (0x00) อยู่ด้วย เพราะ `strcpy` หยุดทำงานเมื่อเจอ Null Byte
-    - ไม่ใช่แค่สัญญาณเตือน แต่ยังเป็น "กำแพง" ที่ทำให้`strcpy`หยุดทับมันด้วย
+    - ไม่ใช่แค่สัญญาณเตือน แต่ยังเป็น "กำแพง" ที่ทำให้`strcpy`หยุดเมื่อเจอมันด้วย
     - **StackGuard:** Canary word before return address -> Detect Overwrite
-    - ปัญหา : ถ้า hacker รู้ Canary Word ก็แค่เขียนให้ถูกก็พอ 
+    - ปัญหา : ถ้า Hacker รู้ Canary Word ก็แค่เขียนให้ถูกก็พอ 
 
-  - Address Encode : Encrypt Address ทำให้ถึง hacker แก้ได้ แต่เนื่องจากไม่รู้ว่า Encrypt อย่างไร เมื่อเรา Decrypt ก็จะไปที่ไหนไม่รู้ ซึ่งมีโอกาสสูงจะ Crash -> ทำให้เราไม่ไปรันโค้ดที่ hacker อยากให้รัน
+  - Address Encode : Encrypt Address ทำให้ถึง Hacker แก้ได้ แต่เนื่องจากไม่รู้ว่า Encrypt อย่างไร เมื่อเรา Decrypt ก็จะไปที่ไหนไม่รู้ ซึ่งมีโอกาสสูงจะ Crash -> ทำให้เราไม่ไปรันโค้ดที่ Hacker อยากให้รัน
     - **PointGuard：** Encrypts pointers,  Protects function pointers
     - **SPEF:** Encrypted instruction/code   
     - **Instruction Set Randomization (ISR):** เข้ารหัส/สุ่มคำสั่งด้วย per-process key (เช่น XOR) ทำให้โค้ดที่โจมตีฉีดมาไม่ตรงกับ ISA ที่ถูกถอดรหัสจริง (Columbia / Drexel)
       - ปกติ ADD อาจจะเป็น Opcode 0x01 ในทุกเครื่อง.
-      - ISR จะสุ่มให้ Process A ใช้ ADD = 0x55, Process B ใช้ ADD = 0xAA. ซึ่ง hacker เดาไม่ได้
+      - ISR จะสุ่มให้ Process A ใช้ ADD = 0x55, Process B ใช้ ADD = 0xAA. ซึ่ง Hacker เดาไม่ได้
     - ปัญหา : Performance, Compatibility
 
   - Copy of Address : เก็บ return addr สองที่จริง, เวลาจะ ret จะเทียบสองค่าถ้าไม่ตรงคือถูกเขียนทับ
     - **Split Stack:** Separates control(ret)/data(buffer) stack, มี ret ที่เดียว แยกไว้อยู่
     - ปัญหา : ทับสองที่ก็โดนอยู่ดี
 
-  - Tags :  บิตพิเศษ meta data ที่ติดไปกับแต่ละคำของหน่วยความจำ (memory word) เพื่อบอกว่า ให้แสดงว่า “ข้อมูลนี้มาจากที่มาใด” ถ้าจะใช้ค่านี้เป็น Addr แต่ดันมาจาก input -> ไม่อนุญาต 
+  - Tags :  บิตพิเศษ meta data ที่ติดไปกับแต่ละคำของหน่วยความจำ (memory word) เพื่อบอกว่า ให้แสดงว่า “ข้อมูลนี้มาจากที่ใด” ถ้าจะใช้ค่านี้เป็น Addr แต่ดันมาจาก input -> ไม่อนุญาต 
     - **Input Protection:** Prevents untrusted data as control data -> Secure bit 
 
 - **Bounds Checking:** Validates memory access : จองเท่าไหร่เขียนเท่านั้น — ทางแก้ที่ถูกต้องแต่แพง
@@ -106,7 +106,7 @@ Includes:
 ### Isolation
 - Non-executable memory (NX), sandboxing  
   - Memory บางส่วนไม่อนุญาตให้ execute
-  - ไม่แก้ root cause เพราะ NX กันการฉีดโค้ดใหม่ได้ แต่ยังใช้คำสั่งที่มีอยู่แล้วในเครื่องได้ ปะติดปะต่อกันจนกลายเป็นคำสั่งร้ายแรง เรียกว่า ROP (Return-Oriented Programming)
+  - ไม่แก้ root cause เพราะถึง NX กันการฉีดโค้ดใหม่ได้ แต่ยังใช้คำสั่งที่มีอยู่แล้วในเครื่องได้ ปะติดปะต่อกันจนกลายเป็นคำสั่งร้ายแรง ซึ่งเราเรียกว่าวิธีนี้ว่า ROP (Return-Oriented Programming)
 
 ### Secure Boost
 - hash เก็บ kernel code ไว้เป็น digital signature -> ถ้าไม่ตรงไม่ boost

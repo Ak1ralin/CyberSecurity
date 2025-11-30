@@ -30,7 +30,7 @@
 > Predict & Plan -> predict how attacker might compromise a system.
 Think Like a bad guys
 
-Threat are not vulnerabilities(Bug), Its can only be mitigated
+Threat are not Vulnerabilities (Bug), Its can only be mitigated
 
 Process = Gather info → Model system → Identify threats → Resolve them.
 

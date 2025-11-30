@@ -30,7 +30,7 @@ Even with public keys, we cannot prove ownership without binding a key to an ide
 - Binds an entity’s **public key** to its identity attributes.  
 - Issued and digitally signed by a trusted third party (CA).  
 - A ส่ง publicKeyA ให้ CA แล้ว CA คืน Digital Certificate ให้ซึ่งคือ privateKeyC(Cert,publicKeyA)
-- B ที่เชื่อ CA เหมือนกัน(มี publicKeyC) A ส่ง Digital Certificate ให้, B decrypt ก็จะเห็น publicKeyA และ Cert ที่ CA ออกให้ A -> น่าเชื่อถือ 
+- B ที่เชื่อ CA เหมือนกัน(มี publicKeyC), เมื่อ A ส่ง Digital Certificate ให้, B decrypt ก็จะเห็น publicKeyA และ Cert ที่ CA ออกให้ A -> PublicKey นี้น่าเชื่อถือ 
 
 ---
 

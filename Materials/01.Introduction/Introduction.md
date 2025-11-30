@@ -42,7 +42,7 @@ Digital crimes include:
 ---
 
 ## Social Engineering
-Persuading people into revealing confidential information.  
+Persuading people to revealing confidential information.  
 Example: AOL hack using fake car sale email with attachment which contain malware.  
 Potential leaks include printed documents, disks, and outdated hardware.
 

@@ -2,7 +2,7 @@
 
 ## Information Security Goals: CIA Triad
 - **Confidentiality:** Only authorized users can access data.  
-- **Integrity:** Data must not be tampered or altered.  
+- **Integrity:** Data must not be tampered or altered by unauthorized users.  
 - **Availability:** Systems and data must be available to authorized users.
 
 ## Security Framework: AAA
@@ -18,7 +18,7 @@
 - User accountability : Known who's action  
 - Damage assessment : post-incident evaluation, analyze impact and improve future defenses
 - Identify security violation causes : find root cause  
-- Describe system’s security state : malware
+- Describe system’s security state : identify malware
     - Detect unauthorized system states
 - Evaluate protection mechanisms  
     - Deter attacks via audit records : Make hacker feel fears

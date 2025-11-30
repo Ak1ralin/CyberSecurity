@@ -24,8 +24,8 @@
 ## Zero-Knowledge Password Proof (ZKPP)
 - Prove password knowledge without revealing it.
     - ทั้งผู้ใช้และเซิร์ฟเวอร์มี “ค่าลับร่วมกัน” (derived secret)
-    - ผู้ใช้ตอบสนองต่อ challenge จากเซิร์ฟเวอร์ด้วยค่าที่คำนวณจากรหัสผ่าน
-    - เซิร์ฟเวอร์ตรวจสอบได้ว่าผู้ใช้นั้นรู้รหัสจริง โดยไม่เห็นรหัสเลย
+    - ผู้ใช้ตอบสนองต่อ challenge จากเซิร์ฟเวอร์ด้วยค่าที่คำนวณจากค่ารับ
+    - เซิร์ฟเวอร์ตรวจสอบได้ว่าผู้ใช้นั้นรู้จริง โดยไม่เคยเห็นอีกฝ่ายแสดงเลย
 - Goal
     - Prevent password theft during transmission.
     - Stop replay attacks (attackers can’t reuse captured data)

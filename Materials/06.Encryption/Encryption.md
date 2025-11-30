@@ -27,7 +27,7 @@
   - Caesar cipher (monoalphabetic):  แทนแต่ละตัวอักษรด้วยอีกตัวอักษรหนึ่งโดยใช้รูปแบบการแทนที่คงที่ (fixed mapping)
     - ตามที่เสริชหาได้ Caesar Cipher คือ fixed shift ด้วยซ้ำคือ เช่น 3 คือ bad -> edg
     - แบบที่อาจารย์ยกตัวอย่างในสไลด์คือ Keyword Cipher คือ
-      - `abcdefgh...` : standard alphabet 
+      - `abcdefgh...` standard alphabet 
       - `fodabceg...` if key = 'food' ซ้ำก็ตัดออก, key + rest of alphabet 
       - bad -> ofa
   - Weakness: Frequency analysis reveals plaintext patterns. -> เพราะในคำศัพท์อังกฤษ pattern การใช้อักษรมันค่อนข้างคงที่ เช่น e มักจะมากสุด

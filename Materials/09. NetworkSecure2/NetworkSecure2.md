@@ -27,9 +27,9 @@
         - ระบบปฏิบัติการหรือเบราว์เซอร์จะเช็ก DNS cache ในเครื่อง (local) ก่อน
             - ถ้ามีข้อมูล (ยังไม่หมดอายุ TTL) จะใช้ IP นั้นทันที
             - else -> ถาม DNS Resolver (ของ InternetServiceProvider หรือองค์กร)
-        - Resolver ตรวจสอบลำดับชั้นของ DNS
+        - DNS Resolver ตรวจสอบ
             - ตรวจสอบใน cache
-            - ถ้ายังไม่รู้คำตอบ Resolver จะทำการค้นแบบ “recursive”
+            - ถ้าไม่มีข้อมูล Resolver จะทำการค้นแบบ “recursive”
                 - ถาม Root DNS Server → ได้ชื่อของ Top-Level Domain (TLD) เช่น .th
                 - ถาม TLD Server (.th) → ได้ชื่อของ Authoritative Server ที่ดูแล chula.ac.th
                 - ถาม Authoritative Server (chula.ac.th) → ได้ IP ของ www.chula.ac.th
@@ -38,7 +38,7 @@
         - ผู้ใช้ได้รับ IP เช่น 161.200.192.4
         - นำ IP ที่ได้ไปเปิดการเชื่อมต่อผ่าน TCP หรือ HTTPS
     - ปัญหา : 
-        - มันมี part additional ที่ใส่ <name,ip> ตอน authoritative ส่งคืนให้ DNS resolver
+        - มันมี Additional Part ที่ใส่ <name,ip> เพิ่มเติมได้ (ส่งให้เผื่อจะได้ไม่ต้องมารบกวนบ่อย) ตอน Authoritative ส่งคืนให้ DNS resolver
         - DNS resolver เชื่อสิ่งที่ DNS Server ส่งกลับมาให้ 100% 
 
   - Spoofing (Kaminsky) : DNS Spoofing -> เป็นวิธีการ
@@ -59,12 +59,11 @@
     - **Defense** : แก้โดยไม่ให้แถม แต่มันก็จะทำให้ Perf แย่ จึงเปลี่ยนเป็นแถมได้เฉพาะ web ที่อยู่ใต้ domain เดียวกัน (Bailiwick Checking) เช่น ns.a.com, mail.a.com  
 
   - Rebinding : เปลี่ยน IP ที่ผูกกับชื่อโดเมนให้เป็น Internal ip, TTL อันแรกน้อย รอบ 2 ส่งให้เป็น Internal IP แล้วให้ JS ที่ฝังไปขุดข้อมูล
-    - DNS Spoofing ไม่ใช่ Required Condition: ถูกต้องครับ (ปกติแค่หลอกให้กดลิงก์ก็พอแล้ว)
+    - DNS Spoofing ไม่ใช่ Required Condition (ปกติแค่หลอกให้กดลิงก์ก็พอแล้ว)
     - แต่ DNS Spoofing เป็น Catalyst (ตัวเร่ง): ช่วยบังคับให้คนที่ไม่ยอมกดลิงก์แปลกๆ กลายเป็นเหยื่อของ DNS Rebinding ได้
     - **Defense** : 
-    - ฝั่งเบราว์เซอร์: ปรับค่าป้องกัน DNS rebinding, refuse mid-session IP switch
-    - ฝั่งเครือข่าย/Resolver: บล็อกการ resolve ชื่อสาธารณะให้เป็น private IP ranges
-    - Firewall: ป้องกันการเข้าถึงพอร์ตจัดการจากเครือข่ายภายนอก
+      - ฝั่งเบราว์เซอร์: ปรับค่าป้องกัน DNS rebinding, refuse mid-session IP switch
+      - ฝั่งเครือข่าย/Resolver: บล็อกการ resolve ชื่อสาธารณะให้เป็น private IP ranges
 
   - DNSSEC (auth & integrity) -> เพิ่ม "ลายเซ็นดิจิทัล" (Digital Signature) -> แก้ DNS Spoofing -> แก้ Cache Poisoning
 
